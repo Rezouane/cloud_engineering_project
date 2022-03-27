@@ -1,7 +1,0 @@
-com\example\entreprise\model\ToDoList.class
-com\example\entreprise\service\impl\ToDoListImpl.class
-com\example\entreprise\kafka\ProducerKafka.class
-com\example\entreprise\ToDoListApplication.class
-com\example\entreprise\service\ToDoListService.class
-com\example\entreprise\web\ToDoListRessource.class
-com\example\entreprise\repository\ToDoListRepository.class
