@@ -21,13 +21,13 @@ public class ConsumerThread implements CommandLineRunner {
     private BeanFactory beanFactory;
 
     public ConsumerThread(BeanFactory beanFactory) {
-        this.consumerKafka = new ConsumerKafka();
+        //this.consumerKafka = new ConsumerKafka();
         this.beanFactory = beanFactory;
     }
 
     @Override
     public void run(String... args) {
-        Map<Integer, List<String>> messages = new HashMap<>();
+        /*Map<Integer, List<String>> messages = new HashMap<>();
         while (true) {
             ConsumerRecords<String, String> records = consumerKafka.consume();
             for (ConsumerRecord<String, String> record : records) {
@@ -41,6 +41,6 @@ public class ConsumerThread implements CommandLineRunner {
                 this.beanFactory.getBean(EmployeService.class).addNotifications(key, messages.get(key));
             }
             messages.clear();
-        }
+        }*/
     }
 }

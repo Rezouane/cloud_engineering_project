@@ -15,11 +15,11 @@ import java.util.Map;
 public class ToDoListRessource {
 
 
-    private ProducerKafka producerKafka;
+    //private ProducerKafka producerKafka;
     private BeanFactory beanFactory;
 
     public ToDoListRessource(BeanFactory beanFactory) {
-        producerKafka = new ProducerKafka();
+        //producerKafka = new ProducerKafka();
         this.beanFactory = beanFactory;
     }
 
@@ -48,7 +48,7 @@ public class ToDoListRessource {
         ToDoList toDoList = beanFactory.getBean(ToDoListService.class)
                 .insertToDoList(new ToDoList(newToDoList.getTitle(), newToDoList.getDescription(),
                         new ArrayList<String>(), false, newToDoList.getTeamNumber()));
-        producerKafka.sendMessage(toDoList.getTeamNumber(), "The project " + toDoList.getTitle() + " has been started");
+        //producerKafka.sendMessage(toDoList.getTeamNumber(), "The project " + toDoList.getTitle() + " has been started");
         return ResponseEntity.ok().body(toDoList);
     }
 
@@ -59,7 +59,7 @@ public class ToDoListRessource {
         if (toDoList == null) {
             return ResponseEntity.notFound().build();
         }
-        producerKafka.sendMessage(toDoList.getTeamNumber(), employeeEmail.get("employeeEmail") + " has been added to the project : " + toDoList.getTitle());
+        //producerKafka.sendMessage(toDoList.getTeamNumber(), employeeEmail.get("employeeEmail") + " has been added to the project : " + toDoList.getTitle());
         return ResponseEntity.ok().body(toDoList);
     }
 
@@ -69,7 +69,7 @@ public class ToDoListRessource {
         if (toDoList == null) {
             return ResponseEntity.notFound().build();
         }
-        producerKafka.sendMessage(toDoList.getTeamNumber(), "The project " + toDoList.getTitle() + " is finished");
+        //producerKafka.sendMessage(toDoList.getTeamNumber(), "The project " + toDoList.getTitle() + " is finished");
         return ResponseEntity.ok().body(toDoList);
     }
 }
