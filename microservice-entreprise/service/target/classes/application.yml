@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: micro-service-entreprise
+  data:
+    mongodb:
+      database: ${MONGO_DB_NAME}
+      port: ${MONGO_DB_PORT}
+      host: ${MONGO_DB_HOST}
+      auto-index-creation: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL}
+  healthcheck:
+    enabled: true
+server:
+  port: 8181
