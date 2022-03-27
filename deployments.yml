@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      containers:
+        - name: registry-container
+          image: rudyefrei/projet_service-registry:1
+          imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb-container
+          image: mongo
+          imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entreprise-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: entreprise
+  template:
+    metadata:
+      labels:
+        app: entreprise
+    spec:
+      containers:
+        - name: entreprise-container
+          image: rudyefrei/projet_service-entreprise:1
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_DB_HOST
+              value: 'mongodb-service.default.svc.cluster.local'
+            - name: MONGO_DB_PORT
+              value: '27017'
+            - name: MONGO_DB_NAME
+              value: 'Entreprise'
+            - name: EUREKA_URL
+              value: 'http://registry-service.default.svc.cluster.local:8761/eureka/'
+            - name: KAFKA_BROKER
+              value: 'kafka-service.default.svc.cluster.local:29092'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: to-do-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: to-do
+  template:
+    metadata:
+      labels:
+        app: to-do
+    spec:
+      containers:
+        - name: to-do-container
+          image: rudyefrei/projet_service-todolist:1
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_DB_HOST
+              value: 'mongodb-service.default.svc.cluster.local'
+            - name: MONGO_DB_PORT
+              value: '27017'
+            - name: MONGO_DB_NAME
+              value: 'ToDoList'
+            - name: EUREKA_URL
+              value: 'http://registry-service.default.svc.cluster.local:8761/eureka/'
+            - name: KAFKA_BROKER
+              value: 'kafka-service.default.svc.cluster.local:29092'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper-container
+          image: confluentinc/cp-zookeeper:latest
+          imagePullPolicy: Always
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: '2181'
+            - name: ZOOKEEPER_TICK_TIME
+              value: '2000'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafka-container
+          image: confluentinc/cp-kafka:latest
+          imagePullPolicy: Always
+          env:
+            - name: KAFKA_BROKER_ID
+              value: '1'
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: 'zookeeper-service.default.svc.cluster.local:2181'
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: 'PLAINTEXT://kafka-service.default.svc.cluster.local:9092,PLAINTEXT_HOST://kafka-service.default.svc.cluster.local:29092'
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: 'PLAINTEXT'
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: '1'
