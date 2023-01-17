@@ -23,3 +23,5 @@ a cluster, unfortunately in that second version we had some problems to get kafk
 however if we remove kafka all works fine.
 
 # Architecture of our project
+
+![alt text](https://github.com/Rezouane/cloud_engineering_project/blob/main/architecture.PNG?raw=true)
